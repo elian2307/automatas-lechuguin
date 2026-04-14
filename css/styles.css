@@ -1,0 +1,330 @@
+:root {
+  --tea-green: #c5efcb;
+  --black-deep: #020402;
+  --dusty-olive: #758173;
+  --text-light: #f4f4f4;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--black-deep);
+  color: var(--text-light);
+  font-family: "Inter", sans-serif;
+  line-height: 1.6;
+}
+
+header {
+  background-color: rgba(2, 4, 2, 0.95);
+  border-bottom: 1px solid var(--dusty-olive);
+  padding: 1rem 5%;
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+}
+
+.logo {
+  font-family: "Fira Code", monospace;
+  color: var(--tea-green);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+nav a {
+  color: var(--dusty-olive);
+  text-decoration: none;
+  margin-left: 20px;
+  font-size: 0.9rem;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: var(--tea-green);
+}
+
+.hero {
+  padding: 100px 5%;
+  background: linear-gradient(180deg, var(--black-deep) 0%, #111811 100%);
+  text-align: center;
+  border-bottom: 1px solid rgba(117, 129, 115, 0.2);
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  color: var(--tea-green);
+  margin-bottom: 20px;
+  font-family: "Fira Code", monospace;
+}
+
+.hero p {
+  color: var(--dusty-olive);
+  max-width: 700px;
+  margin: 0 auto 30px;
+  font-size: 1.1rem;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  padding: 50px 5%;
+}
+
+.card {
+  background: rgba(117, 129, 115, 0.05);
+  border: 1px solid var(--dusty-olive);
+  padding: 30px;
+  border-radius: 4px;
+  transition:
+    transform 0.3s,
+    border-color 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: var(--tea-green);
+  background: rgba(197, 239, 203, 0.02);
+}
+
+.card h2 {
+  color: var(--tea-green);
+  font-family: "Fira Code", monospace;
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+}
+
+.card p {
+  color: #ccc;
+  font-size: 0.95rem;
+}
+
+footer {
+  text-align: center;
+  padding: 40px;
+  border-top: 1px solid rgba(117, 129, 115, 0.2);
+  color: var(--dusty-olive);
+  font-size: 0.8rem;
+}
+
+.btn-main {
+  display: inline-block;
+  background-color: var(--tea-green);
+  color: var(--black-deep);
+  padding: 12px 25px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: "Fira Code", monospace;
+  transition: opacity 0.3s;
+}
+
+.btn-main:hover {
+  opacity: 0.9;
+}
+
+span.code {
+  color: var(--tea-green);
+  background: #1a1d1a;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+footer p a {
+  color: var(--dusty-olive);
+  text-decoration: none;
+  margin: 0 5px;
+  transition: color 0.3s;
+  &:hover {
+    color: var(--tea-green);
+    transition: color 0.3s;
+    
+  }
+}
+
+footer p a img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    vertical-align: middle;
+    border-radius: 50%;
+}
+
+/* Layout Documentacion */
+.docs-layout {
+  display: flex;
+  min-height: calc(100vh - 75px);
+}
+
+.sidebar {
+  width: 280px;
+  background-color: #0b110b;
+  border-right: 1px solid var(--dusty-olive);
+  padding: 30px 20px;
+  position: sticky;
+  top: 75px;
+  height: calc(100vh - 75px);
+  overflow-y: auto;
+}
+
+.sidebar h3 {
+  color: var(--tea-green);
+  font-family: "Fira Code", monospace;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  margin-top: 20px;
+}
+
+.sidebar h3:first-child {
+  margin-top: 0;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+.sidebar a {
+  color: var(--dusty-olive);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s;
+  display: block;
+}
+
+.sidebar a:hover {
+  color: var(--text-light);
+}
+
+.sidebar .sub-menu {
+  margin-left: 15px;
+  margin-top: 8px;
+  border-left: 1px solid rgba(117, 129, 115, 0.3);
+  padding-left: 10px;
+}
+
+.docs-content {
+  flex: 1;
+  padding: 40px 5%;
+  max-width: 1000px;
+}
+
+.content-section {
+  margin-bottom: 60px;
+}
+
+.content-section h1 {
+  color: var(--tea-green);
+  font-family: "Fira Code", monospace;
+  font-size: 2.5rem;
+  margin-bottom: 25px;
+  border-bottom: 1px solid rgba(117, 129, 115, 0.4);
+  padding-bottom: 15px;
+}
+
+.content-section h2 {
+  color: var(--text-light);
+  font-size: 1.8rem;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  font-family: "Fira Code", monospace;
+}
+
+.content-section h3 {
+  color: #ccc;
+  font-size: 1.3rem;
+  margin-top: 35px;
+  margin-bottom: 15px;
+}
+
+.content-section h4 {
+  color: var(--dusty-olive);
+  font-size: 1.1rem;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.content-section p {
+  margin-bottom: 20px;
+  color: #d1d1d1;
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+.content-section ul {
+  margin-left: 20px;
+  margin-bottom: 20px;
+  color: #d1d1d1;
+}
+
+.content-section li {
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.code-block {
+  background-color: #0a0d0a;
+  border: 1px solid var(--dusty-olive);
+  border-left: 4px solid var(--tea-green);
+  border-radius: 4px;
+  padding: 20px;
+  overflow-x: auto;
+  margin-bottom: 30px;
+  font-family: "Fira Code", monospace;
+  font-size: 0.95rem;
+  color: #e0e0e0;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.code-block .keyword { color: #c5efcb; font-weight: bold; }
+.code-block .string { color: #f2e394; }
+.code-block .comment { color: #758173; font-style: italic; }
+.code-block .function { color: #9bbcf4; }
+.code-block .variable { color: #e2c0e8; }
+.code-block .number { color: #ffb86c; }
+
+/* Responsive docs */
+@media (max-width: 900px) {
+  .docs-layout {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--dusty-olive);
+    padding: 20px 5%;
+  }
+}
+
+/* Custom Scrollbar for whole page and elements */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--black-deep);
+  border-left: 1px solid rgba(117, 129, 115, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--dusty-olive);
+  border-radius: 5px;
+  border: 2px solid var(--black-deep); /* Gives a padded look */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--tea-green);
+}

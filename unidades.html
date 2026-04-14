@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidades | Lenguajes y Autómatas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">Automatas</div>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="unidades.html">Unidades</a>
+        </nav>
+    </header>
+
+    <div class="docs-layout">
+        <aside class="sidebar">
+            <h3>Unidad 1: Análisis Semántico</h3>
+            <ul>
+                <li><a href="#u1-1">1.1 Árboles de expresiones</a></li>
+                <li><a href="#u1-2">1.2 Acciones semánticas</a></li>
+                <li><a href="#u1-3">1.3 Comprobaciones de tipos</a></li>
+                <li><a href="#u1-4">1.4 Pila semántica</a></li>
+                <li><a href="#u1-5">1.5 Esquema de traducción</a></li>
+                <li><a href="#u1-6">1.6 Tabla de símbolos y direcciones</a></li>
+                <li><a href="#u1-7">1.7 Errores semánticos</a></li>
+            </ul>
+            <h3>Unidad 2: Generación de Código Intermedio</h3>
+            <ul>
+                <li><a href="#u2-1">2.1 Notaciones</a>
+                    <ul class="sub-menu">
+                        <li><a href="#u2-1-1">Prefija, Infija y Postfija</a></li>
+                    </ul>
+                </li>
+                <li><a href="#u2-2">2.2 Representaciones de Código</a>
+                    <ul class="sub-menu">
+                        <li><a href="#u2-2-1">Notación Polaca</a></li>
+                        <li><a href="#u2-2-2">Código P</a></li>
+                        <li><a href="#u2-2-3">Triplos y Cuádruplos</a></li>
+                    </ul>
+                </li>
+                <li><a href="#u2-3">2.3 Esquemas de generación</a>
+                    <ul class="sub-menu">
+                        <li><a href="#u2-3-1">Variables y Expresiones</a></li>
+                        <li><a href="#u2-3-2">Asignación y Control</a></li>
+                        <li><a href="#u2-3-3">Funciones y Estructuras</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <h3>Unidad 3: Optimización</h3>
+            <ul>
+                <li><a href="#u3-1">3.1 Tipos de optimización</a>
+                    <ul class="sub-menu">
+                        <li><a href="#u3-1-1">Locales</a></li>
+                        <li><a href="#u3-1-2">Ciclos</a></li>
+                        <li><a href="#u3-1-3">Globales</a></li>
+                        <li><a href="#u3-1-4">De mirilla</a></li>
+                    </ul>
+                </li>
+                <li><a href="#u3-2">3.2 Costos</a>
+                    <ul class="sub-menu">
+                        <li><a href="#u3-2-1">Costo de ejecución</a></li>
+                        <li><a href="#u3-2-2">Criterios para mejorar el código</a></li>
+                        <li><a href="#u3-2-3">Herramientas para el análisis</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="docs-content">
+            <!-- Unidad 1 -->
+            <section class="content-section" id="unidad-1">
+                <h1>Unidad 1: Análisis Semántico</h1>
+                <p>El análisis semántico es la fase posterior al análisis sintáctico. Su objetivo es comprobar que el
+                    programa que se está compilando cumple con las reglas semánticas del lenguaje. Aquí nos aseguramos
+                    de que "las oraciones tengan sentido" más allá de su gramática.</p>
+
+                <h2 id="u1-1">1.1 Árboles de expresiones</h2>
+                <p>Un árbol de expresión es una estructura jerárquica que representa una expresión matemática o lógica.
+                    Las hojas son los operandos (variables o constantes) y los nodos internos son los operadores. Este
+                    árbol garantiza que el orden de precedencia sea respetado.</p>
+                <div class="code-block">
+                    <pre><span class="comment">// Expresión: A = B * C + D</span>
+      <span class="keyword">=</span>
+     / \
+    <span class="variable">A</span>   <span class="keyword">+</span>
+       / \
+      <span class="keyword">*</span>   <span class="variable">D</span>
+     / \
+    <span class="variable">B</span>   <span class="variable">C</span></pre>
+                </div>
+
+                <h2 id="u1-2">1.2 Acciones semánticas de un analizador sintáctico</h2>
+                <p>Son fragmentos de código que se ejecutan cada vez que la gramática de un compilador reconoce una
+                    regla específica. Sirven para evaluar atributos, generar el árbol sintáctico, o registrar
+                    información.</p>
+                <div class="code-block">
+                    <pre><span class="comment">// Ejemplo en YACC/Bison</span>
+expr : expr <span class="string">'+'</span> term  { <span class="variable">$$</span> = <span class="variable">$1</span> + <span class="variable">$3</span>; } <span class="comment">// Acción semántica de suma</span>
+     | term           { <span class="variable">$$</span> = <span class="variable">$1</span>; };</pre>
+                </div>
+
+                <h2 id="u1-3">1.3 Comprobaciones de tipos en expresiones</h2>
+                <p>Verifica que los operandos de una expresión sean compatibles con el operador aplicado (Ej. no se
+                    puede sumar un entero y una cadena sin un cast previo). Si los tipos difieren, el compilador debe
+                    inyectar una conversión implícita (coerción) o lanzar un error de tipo.</p>
+                <div class="code-block">
+                    <pre><span class="keyword">int</span> <span class="variable">x</span> = <span class="number">5</span>;
+<span class="keyword">float</span> <span class="variable">y</span> = <span class="number">3.2</span>;
+<span class="comment">// La comprobación deduce que x + y es de tipo flotante.</span>
+<span class="keyword">float</span> <span class="variable">result</span> = <span class="variable">x</span> + <span class="variable">y</span>; <span class="comment">// int to float coerción</span></pre>
+                </div>
+
+                <h2 id="u1-4">1.4 Pila semántica en un analizador sintáctico</h2>
+                <p>Es una estructura de datos LIFO paralela a la pila del analizador (pila de estados). En ella se
+                    guardan los atributos semánticos de los símbolos no terminales a medida que se va construyendo el
+                    árbol. Cuando ocurre una reducción matemática, se extraen elementos de la pila semántica para
+                    evaluarlos.</p>
+
+                <h2 id="u1-5">1.5 Esquema de traducción</h2>
+                <p>Un esquema de traducción dirigida por la sintaxis es una gramática libre de contexto en donde se han
+                    integrado variables y fragmentos de código. Permite asociar atributos a los símbolos y evaluar
+                    propiedades.</p>
+
+                <h2 id="u1-6">1.6 Generación de la tabla de símbolo y tabla de direcciones</h2>
+                <p>La <strong>tabla de símbolos</strong> almacena las declaraciones de variables, funciones y clases,
+                    incluyendo su tipo y alcance (scope).</p>
+                <p>La <strong>tabla de direcciones</strong> asigna direcciones o desplazamientos (offsets) en memoria
+                    para cada elemento presente en la tabla de símbolos.</p>
+                <div class="code-block">
+                    <pre><span class="comment">/* Tabla de Símbolos Conceptuales */</span>
+<span class="keyword">Nombre</span>  | <span class="keyword">Tipo</span>  | <span class="keyword">Ámbito</span> | <span class="keyword">Offset</span>
+--------|-------|--------|-------
+<span class="variable">x</span>       | int   | main   | <span class="number">0</span>
+<span class="variable">y</span>       | float | main   | <span class="number">4</span>
+<span class="function">calc</span>    | func  | global | NULL</pre>
+                </div>
+
+                <h2 id="u1-7">1.7 Manejo de errores semánticos</h2>
+                <p>Los errores semánticos suceden cuando el código tiene sentido sintácticamente pero carece de sentido
+                    lógico para el lenguaje. Ejemplos incluyen el uso de variables no declaradas o funciones invocadas
+                    con parámetros incorrectos. El analizador debe recuperar de estos errores para continuar emitiendo
+                    diagnósticos.</p>
+                <div class="code-block">
+                    <pre><span class="comment">// Error: type mismatch</span>
+<span class="keyword">int</span> <span class="variable">edad</span> = <span class="string">"Veinte"</span>; <span class="comment">// Error semántico</span></pre>
+                </div>
+            </section>
+
+            <!-- Unidad 2 -->
+            <section class="content-section" id="unidad-2">
+                <h1>Unidad 2: Generación de Código Intermedio</h1>
+                <p>El código intermedio es un puente entre el analizador semántico y el generador de código ensamblador
+                    (código máquina). Nos permite tener cierta independencia de la arquitectura y facilitar rutinas de
+                    optimización.</p>
+
+                <h2 id="u2-1">2.1 Notaciones</h2>
+                <p>Existen diversas formas de escribir las sentencias para organizarlas durante el proceso de
+                    compilación sin la ambigüedad que pueden tener los lenguajes altos.</p>
+
+                <h3 id="u2-1-1">2.1.1 Prefija, 2.1.2 Infija, 2.2.3 Postfija</h3>
+                <ul>
+                    <li><strong>Infija:</strong> El operador está entre operandos. Ej: <span class="code">A + B</span>.
+                        (Común en humanos, problemática para máquinas por precedencias).</li>
+                    <li><strong>Prefija:</strong> El operador precede a los operandos. Ej: <span class="code">+ A
+                            B</span>.</li>
+                    <li><strong>Postfija:</strong> El operador se encuentra después. Ej: <span class="code">A B
+                            +</span>. (Muy fácil de procesar utilizando una pila).</li>
+                </ul>
+
+                <h2 id="u2-2">2.2 Representaciones de código Intermedio</h2>
+
+                <h3 id="u2-2-1">2.2.1 Notación Polaca</h3>
+                <p>Es un sinónimo de la notación <strong>Postfija</strong> diseñada por el lógico Jan Łukasiewicz.
+                    Elimina por completo la necesidad de usar paréntesis matemáticos para dictar la precedencia.</p>
+
+                <h3 id="u2-2-2">2.2.2 Código P</h3>
+                <p>Es el lenguaje máquina para una supercomputadora teórica o una máquina de pila (Stack Machine). Fue
+                    popularizado por el compilador Pascal a nivel intermedio (P-Code).</p>
+                <div class="code-block">
+                    <pre><span class="comment">; Código P para: x = y + z</span>
+<span class="function">LOD</span> <span class="number">1</span>, y   <span class="comment">; Carga y en el tope de la pila</span>
+<span class="function">LOD</span> <span class="number">1</span>, z   <span class="comment">; Carga z encima de y</span>
+<span class="function">ADD</span>        <span class="comment">; Suma el tope y subtope</span>
+<span class="function">STO</span> x      <span class="comment">; Almacena el resultado en x</span></pre>
+                </div>
+
+                <h3 id="u2-2-3">2.2.3 Triplos y 2.2.4 Cuádruplos</h3>
+                <p>Son estructuras a modo de registro temporal para mapear instrucciones a las 3-Address-Codes (TAC).
+                </p>
+                <ul>
+                    <li><strong>Cuádruplo:</strong> Tiene cuatro campos: <span class="code">(Operador, Operando1,
+                            Operando2, Resultado_Temporal)</span>.</li>
+                    <li><strong>Triplo:</strong> Tiene tres campos: <span class="code">(Operador, Operando1,
+                            Operando2)</span>. El resultado implícitamente indica la propia línea de instrucción para
+                        referenciar en el futuro.</li>
+                </ul>
+                <div class="code-block">
+                    <pre><span class="comment">// Expresión: a = b * -c + b * -c</span>
+<span class="comment">// Formato Cuádruplo:</span>
+<span class="number">1</span>: ( <span class="keyword">MINUS</span>, c,  null, t1 )
+<span class="number">2</span>: ( <span class="keyword">*</span>,     b,  t1,   t2 )
+<span class="number">3</span>: ( <span class="keyword">MINUS</span>, c,  null, t3 )
+<span class="number">4</span>: ( <span class="keyword">*</span>,     b,  t3,   t4 )
+<span class="number">5</span>: ( <span class="keyword">+</span>,     t2, t4,   t5 )
+<span class="number">6</span>: ( <span class="keyword">=</span>,     t5, null, a  )</pre>
+                </div>
+
+                <h2 id="u2-3">2.3 Esquema de generación</h2>
+                <p>Son un conjunto de directrices algorítmicas de cómo transformar el código fuente en código
+                    intermedio.</p>
+
+                <h3 id="u2-3-1">2.3.1 Variables, Constantes y 2.3.2 Expresiones</h3>
+                <p>Transforman todas las cargas lógicas a variables temporales, respetando el tipo y las comprobaciones
+                    previamente evaluadas por el analizador semántico.</p>
+
+                <h3 id="u2-3-2">2.3.3 Instrucción de asignación y 2.3.4 Control</h3>
+                <p>Las sentencias de control (como el IF/ELSE y el WHILE) no existen rígidamente en ensamblador. Se
+                    modelan usando saltos condicionales y temporales 1D y etiquetas lógicas (<span class="code">goto
+                        L1</span>).</p>
+                <div class="code-block">
+                    <pre><span class="comment">// Código original: if (a < b) then x = 1 else x = 0;</span>
+<span class="number">100</span>: <span class="keyword">if</span> a &lt; b <span class="keyword">goto</span> <span class="number">103</span>
+<span class="number">101</span>: x = <span class="number">0</span>
+<span class="number">102</span>: <span class="keyword">goto</span> <span class="number">104</span>
+<span class="number">103</span>: x = <span class="number">1</span>
+<span class="number">104</span>: <span class="comment">... (siguiente código)</span></pre>
+                </div>
+
+                <h3 id="u2-3-3">2.3.5 Funciones y 2.3.6 Estructuras</h3>
+                <p>Las funciones y rutinas en código intermedio requieren de instrucciones específicas para el paso de
+                    parámetros y rescate de la memoria (Stack Frame / Contexto local de la función). Las estructuras se
+                    fragmentan linealizando sus componentes sumando desplazamientos precalculados a la dirección base
+                    desde el paso de la Unidad 1.6.</p>
+            </section>
+
+            <!-- Unidad 3 -->
+            <section class="content-section" id="unidad-3">
+                <h1>Unidad 3: Optimización</h1>
+                <p>La optimización de código es la fase que busca mejorar el código intermedio (o final) para que el
+                    programa consuma menos recursos (memoria, tiempo de ejecución) manteniendo la misma funcionalidad y
+                    resultados.</p>
+
+                <h2 id="u3-1">3.1 Tipos de optimización</h2>
+
+                <h3 id="u3-1-1">3.1.1 Locales</h3>
+                <p>Se aplican dentro de un bloque básico de código (una secuencia de instrucciones sin saltos).
+                    Incluyen:</p>
+                <ul>
+                    <li><strong>Plegamiento de constantes:</strong> Evaluación de expresiones constantes en tiempo de
+                        compilación. Ej: <span class="code">x = 2 + 3</span> se cambia a <span class="code">x =
+                            5</span>.</li>
+                    <li><strong>Propagación de constantes:</strong> Reemplazo de variables por su valor constante
+                        conocido.</li>
+                    <li><strong>Reducción de fuerza:</strong> Reemplazar operaciones costosas por otras más baratas
+                        (e.g., multiplicar por 2 se cambia a desplazamiento de bits o suma).</li>
+                    <li><strong>Eliminación de subexpresiones comunes:</strong> Evitar recalcular expresiones que ya
+                        fueron calculadas en el mismo bloque.</li>
+                </ul>
+
+                <h3 id="u3-1-2">3.1.2 Ciclos</h3>
+                <p>Dado que los programas pasan la mayor parte de su tiempo en ciclos (bucles), estas optimizaciones
+                    son críticas para el rendimiento global:</p>
+                <ul>
+                    <li><strong>Movimiento de código (Invariantes de bucle):</strong> Sacar del ciclo operaciones cuyo
+                        resultado no cambia en cada iteración.</li>
+                    <li><strong>Desenrollado de bucles (Loop unrolling):</strong> Reducir la sobrecarga del control del
+                        ciclo, procesando múltiples iteraciones secuencialmente a la vez.</li>
+                    <li><strong>Fusión de bucles:</strong> Combinar múltiples bucles adyacentes que iteran sobre el
+                        mismo rango en un solo bucle.</li>
+                </ul>
+
+                <h3 id="u3-1-3">3.1.3 Globales</h3>
+                <p>Más allá de un único bloque, analizando el grafo de flujo de control del programa o nivel función.
+                    Permiten realizar propagación de constantes global, identificar variables vivas, y la eliminación de
+                    código muerto o inalcanzable.</p>
+
+                <h3 id="u3-1-4">3.1.4 De mirilla (Peephole)</h3>
+                <p>Es una técnica que inspecciona mecánicamente reducidas secuencias de código objeto (la "mirilla")
+                    para reemplazarlas por una secuencia más eficiente de la máquina. Ejemplos:</p>
+                <ul>
+                    <li>Eliminación de instrucciones redundantes de carga o almacenamiento en memoria.</li>
+                    <li>Reducción de saltos sobre saltos o hacia la siguiente instrucción.</li>
+                </ul>
+                <div class="code-block">
+                    <pre><span class="comment">; Código original</span>
+<span class="function">MOV</span> R1, R2
+<span class="function">MOV</span> R2, R1  <span class="comment">; Esta instrucción se elimina por redundante</span>
+
+<span class="comment">; Optimización de salto a salto</span>
+<span class="function">JMP</span> L1
+<span class="comment">...</span>
+L1: <span class="function">JMP</span> L2  <span class="comment">; La mirilla cambia el primero directamente por JMP L2</span></pre>
+                </div>
+
+                <h2 id="u3-2">3.2 Costos</h2>
+
+                <h3 id="u3-2-1">3.2.1 Costo de ejecución (memoria, registros, pilas)</h3>
+                <p>Medir el impacto y recursos en tiempo de compilación o de ejecución. Optimizar implica minimizar el
+                    uso según las necesidades del contexto.</p>
+                <ul>
+                    <li><strong>Registros:</strong> Son la memoria más rápida del CPU; el algoritmo de <em>Asignación de
+                            Registros</em> minimiza los volcados en la pila de memoria (RAM) acelerando el programa.</li>
+                    <li><strong>Memoria:</strong> Mejorar la localidad espacial y temporal para aprovechar
+                        adecuadamente la memoria caché.</li>
+                    <li><strong>Pilas:</strong> Evitar realizar llamadas excesivas e innecesarias a rutinas (overheads
+                        de stack), posiblemente reemplazando llamadas por código embebido (Inline expansion) en donde
+                        sea eficiente.</li>
+                </ul>
+
+                <h3 id="u3-2-2">3.2.2 Criterios para mejorar el código</h3>
+                <p>Se busca centrar la optimización en las partes del código que consumen la mayor cantidad del tiempo
+                    de ejecución para tener beneficio comprobable (Regla de Pareto, Hotspots). El código resultado
+                    optimizado debe ser <strong>semánticamente idéntico</strong> al original, no alterar una salida que
+                    es válida, justificar el tiempo o espacio que demora realizarse la misma optimización, y no
+                    introducir nuevos riesgos de estabilidad.</p>
+
+                <h3 id="u3-2-3">3.2.3 Herramientas para el análisis del flujo de datos</h3>
+                <p>Para aplicar las transformaciones es necesario extraer propiedades estables mediante Análisis de
+                    Flujo de Datos (Data-Flow Analysis). Utiliza Grafos de Flujo para deducir propiedades como:</p>
+                <ul>
+                    <li><strong>Variables Vivas:</strong> Datos calculados que podrían ser leídos en el futuro (si no
+                        están vivas, se descartan).</li>
+                    <li><strong>Definiciones Alcanzables:</strong> Asignaciones de valores que logran llegar sin ser
+                        sobreescritas hasta un cierto punto.</li>
+                </ul>
+                <p>La recolección de este conocimiento de los diferentes caminos y ramificaciones permite saber cuándo
+                    es matemáticamente seguro aplicar qué optimizaciones sin cambiar el comportamiento del programa.</p>
+
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Portal Informativo de Ingeniería de Sistemas | By <a href="https://github.com/elian2307"
+                target="_blank"><img src="https://github.com/elian2307.png" alt="">elian2307</a></p>
+    </footer>
+
+</body>
+
+</html>
