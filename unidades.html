@@ -22,7 +22,9 @@
 
     <div class="docs-layout">
         <aside class="sidebar">
-            <h3>Unidad 1: Análisis Semántico</h3>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">Ver Índice Temático</button>
+            <div class="sidebar-content" id="sidebarContent">
+                <h3>Unidad 1: Análisis Semántico</h3>
             <ul>
                 <li><a href="#u1-1">1.1 Árboles de expresiones</a></li>
                 <li><a href="#u1-2">1.2 Acciones semánticas</a></li>
@@ -43,7 +45,8 @@
                     <ul class="sub-menu">
                         <li><a href="#u2-2-1">Notación Polaca</a></li>
                         <li><a href="#u2-2-2">Código P</a></li>
-                        <li><a href="#u2-2-3">Triplos y Cuádruplos</a></li>
+                        <li><a href="#u2-2-3">Triplos</a></li>
+                        <li><a href="#u2-2-4">Cuádruplos</a></li>
                     </ul>
                 </li>
                 <li><a href="#u2-3">2.3 Esquemas de generación</a>
@@ -72,6 +75,14 @@
                     </ul>
                 </li>
             </ul>
+            <h3>Unidad 4: Generación de código objeto</h3>
+            <ul>
+                <li><a href="#u4-1">4.1 Registros</a></li>
+                <li><a href="#u4-2">4.2 Lenguaje ensamblador</a></li>
+                <li><a href="#u4-3">4.3 Lenguaje máquina</a></li>
+                <li><a href="#u4-4">4.4 Administración de memoria</a></li>
+            </ul>
+            </div>
         </aside>
 
         <main class="docs-content">
@@ -123,11 +134,21 @@ expr : expr <span class="string">'+'</span> term  { <span class="variable">$$</s
                     guardan los atributos semánticos de los símbolos no terminales a medida que se va construyendo el
                     árbol. Cuando ocurre una reducción matemática, se extraen elementos de la pila semántica para
                     evaluarlos.</p>
+                <div class="code-block">
+                    <pre><span class="comment">// Pila de estados/símbolos: [0, id, 4, +, 7]</span>
+<span class="comment">// Pila semántica LIFO:  [val_a, val_b]</span>
+<span class="comment">// Al reducir Regla (E -> E + T), los topes numéricos se operan.</span></pre>
+                </div>
 
                 <h2 id="u1-5">1.5 Esquema de traducción</h2>
                 <p>Un esquema de traducción dirigida por la sintaxis es una gramática libre de contexto en donde se han
                     integrado variables y fragmentos de código. Permite asociar atributos a los símbolos y evaluar
                     propiedades.</p>
+                <div class="code-block">
+                    <pre><span class="comment">// Esquema de traducción inyectado a una gramática para suma</span>
+E &rarr; E_1 + T  { E.val = E_1.val + T.val }
+T &rarr; num      { T.val = num.lexval }</pre>
+                </div>
 
                 <h2 id="u1-6">1.6 Generación de la tabla de símbolo y tabla de direcciones</h2>
                 <p>La <strong>tabla de símbolos</strong> almacena las declaraciones de variables, funciones y clases,
@@ -180,6 +201,10 @@ expr : expr <span class="string">'+'</span> term  { <span class="variable">$$</s
                 <h3 id="u2-2-1">2.2.1 Notación Polaca</h3>
                 <p>Es un sinónimo de la notación <strong>Postfija</strong> diseñada por el lógico Jan Łukasiewicz.
                     Elimina por completo la necesidad de usar paréntesis matemáticos para dictar la precedencia.</p>
+                <div class="code-block">
+                    <pre><span class="comment">// Expresión Infija natural: (A + B) * C</span>
+<span class="comment">// Notación Polaca Inversa:  A B + C *</span></pre>
+                </div>
 
                 <h3 id="u2-2-2">2.2.2 Código P</h3>
                 <p>Es el lenguaje máquina para una supercomputadora teórica o una máquina de pila (Stack Machine). Fue
@@ -192,26 +217,41 @@ expr : expr <span class="string">'+'</span> term  { <span class="variable">$$</s
 <span class="function">STO</span> x      <span class="comment">; Almacena el resultado en x</span></pre>
                 </div>
 
-                <h3 id="u2-2-3">2.2.3 Triplos y 2.2.4 Cuádruplos</h3>
-                <p>Son estructuras a modo de registro temporal para mapear instrucciones a las 3-Address-Codes (TAC).
-                </p>
-                <ul>
-                    <li><strong>Cuádruplo:</strong> Tiene cuatro campos: <span class="code">(Operador, Operando1,
-                            Operando2, Resultado_Temporal)</span>.</li>
-                    <li><strong>Triplo:</strong> Tiene tres campos: <span class="code">(Operador, Operando1,
-                            Operando2)</span>. El resultado implícitamente indica la propia línea de instrucción para
-                        referenciar en el futuro.</li>
-                </ul>
+                <h3 id="u2-2-3">2.2.3 Triplos</h3>
+                <p>Los <strong>triplos</strong> son estructuras de código intermedio utilizadas para representar
+                    expresiones mediante tres campos lógicos: <span class="code">(Operador, Operando1,
+                        Operando2)</span>. A diferencia de otras estructuras, el triplo <em>no usa</em> variables
+                    temporales explícitas para guardar sus resultados. En su lugar, el resultado de la operación se
+                    define implícitamente por el <strong>número de la posición o línea</strong> de la instrucción. Las
+                    sentencias futuras simplemente referencian esa misma línea para usar su valor calculado.</p>
                 <div class="code-block">
-                    <pre><span class="comment">// Expresión: a = b * -c + b * -c</span>
-<span class="comment">// Formato Cuádruplo:</span>
-<span class="number">1</span>: ( <span class="keyword">MINUS</span>, c,  null, t1 )
-<span class="number">2</span>: ( <span class="keyword">*</span>,     b,  t1,   t2 )
-<span class="number">3</span>: ( <span class="keyword">MINUS</span>, c,  null, t3 )
-<span class="number">4</span>: ( <span class="keyword">*</span>,     b,  t3,   t4 )
-<span class="number">5</span>: ( <span class="keyword">+</span>,     t2, t4,   t5 )
-<span class="number">6</span>: ( <span class="keyword">=</span>,     t5, null, a  )</pre>
+                    <pre><span class="comment">// Expresión de ejemplo: x = y * z + y * z</span>
+<span class="comment">// Formato Triplo: Referencias como (1) apuntan al resultado de esa línea</span>
+<span class="number">1</span>: ( <span class="keyword">*</span>, y, z )
+<span class="number">2</span>: ( <span class="keyword">*</span>, y, z )
+<span class="number">3</span>: ( <span class="keyword">+</span>, (<span class="number">1</span>), (<span class="number">2</span>) )
+<span class="number">4</span>: ( <span class="keyword">=</span>, x, (<span class="number">3</span>) )</pre>
                 </div>
+                <p><strong>Desventajas:</strong> Mover o reorganizar las instrucciones durante las fases de optimización
+                    es excepcionalmente complicado; alterar el orden alteraría el índice de todas las referencias de
+                    línea siguientes.</p>
+
+                <h3 id="u2-2-4">2.2.4 Cuádruplos</h3>
+                <p>Los <strong>cuádruplos</strong>, como su nombre lo indica, se componen de cuatro campos principales:
+                    <span class="code">(Operador, Operando1, Operando2, Resultado)</span>. A diferencia de los triplos,
+                    en el caso de los cuádruplos el resultado siempre se almacena de manera explícita en una
+                    <em>variable temporal real e independiente</em> (por ejemplo, <code>t1, t2</code>).</p>
+                <div class="code-block">
+                    <pre><span class="comment">// Misma expresión de ejemplo: x = y * z + y * z</span>
+<span class="comment">// Formato Cuádruplo:</span>
+<span class="number">1</span>: ( <span class="keyword">*</span>, y, z, t1 )
+<span class="number">2</span>: ( <span class="keyword">*</span>, y, z, t2 )
+<span class="number">3</span>: ( <span class="keyword">+</span>, t1, t2, t3 )
+<span class="number">4</span>: ( <span class="keyword">=</span>, t3, <i>null</i>, x )</pre>
+                </div>
+                <p><strong>Ventajas:</strong> Aunque generan más variables temporales, este código intermedio es
+                    altamente reubicable. Al no depender de la línea donde son declaradas, las ramas de optimización
+                    pueden manipular y mover las instrucciones sin destruir el árbol de dependencias.</p>
 
                 <h2 id="u2-3">2.3 Esquema de generación</h2>
                 <p>Son un conjunto de directrices algorítmicas de cómo transformar el código fuente en código
@@ -220,6 +260,12 @@ expr : expr <span class="string">'+'</span> term  { <span class="variable">$$</s
                 <h3 id="u2-3-1">2.3.1 Variables, Constantes y 2.3.2 Expresiones</h3>
                 <p>Transforman todas las cargas lógicas a variables temporales, respetando el tipo y las comprobaciones
                     previamente evaluadas por el analizador semántico.</p>
+                <div class="code-block">
+                    <pre><span class="comment">// Transformación de expresión compleja: x = (a * b) + c</span>
+t1 = a * b
+t2 = t1 + c
+x = t2</pre>
+                </div>
 
                 <h3 id="u2-3-2">2.3.3 Instrucción de asignación y 2.3.4 Control</h3>
                 <p>Las sentencias de control (como el IF/ELSE y el WHILE) no existen rígidamente en ensamblador. Se
@@ -239,6 +285,12 @@ expr : expr <span class="string">'+'</span> term  { <span class="variable">$$</s
                     parámetros y rescate de la memoria (Stack Frame / Contexto local de la función). Las estructuras se
                     fragmentan linealizando sus componentes sumando desplazamientos precalculados a la dirección base
                     desde el paso de la Unidad 1.6.</p>
+                <div class="code-block">
+                    <pre><span class="comment">// Estructuración de parámetros en llamadas: draw(x, y)</span>
+<span class="keyword">param</span> x
+<span class="keyword">param</span> y
+<span class="keyword">call</span> draw, 2</pre>
+                </div>
             </section>
 
             <!-- Unidad 3 -->
@@ -264,6 +316,12 @@ expr : expr <span class="string">'+'</span> term  { <span class="variable">$$</s
                     <li><strong>Eliminación de subexpresiones comunes:</strong> Evitar recalcular expresiones que ya
                         fueron calculadas en el mismo bloque.</li>
                 </ul>
+                <div class="code-block">
+                    <pre><span class="comment">// Plegamiento y Propagación de constantes en bloque local</span>
+<span class="comment">// Original:             // Optimizado:</span>
+<span class="keyword">x</span> = 2 * 3;             <span class="keyword">x</span> = 6;
+<span class="keyword">y</span> = x + 0;             <span class="keyword">y</span> = 6;</pre>
+                </div>
 
                 <h3 id="u3-1-2">3.1.2 Ciclos</h3>
                 <p>Dado que los programas pasan la mayor parte de su tiempo en ciclos (bucles), estas optimizaciones
@@ -276,11 +334,29 @@ expr : expr <span class="string">'+'</span> term  { <span class="variable">$$</s
                     <li><strong>Fusión de bucles:</strong> Combinar múltiples bucles adyacentes que iteran sobre el
                         mismo rango en un solo bucle.</li>
                 </ul>
+                <div class="code-block">
+                    <pre><span class="comment">// Movimiento de código invariante de ciclo</span>
+<span class="comment">// Antes:</span>
+<span class="keyword">while</span> (i &lt; n) { 
+  x = a + b; <span class="comment">// 'a + b' No cambia nunca dentro del ciclo</span>
+  i++;
+}
+<span class="comment">// Después:</span>
+x = a + b;
+<span class="keyword">while</span> (i &lt; n) { i++; }</pre>
+                </div>
 
                 <h3 id="u3-1-3">3.1.3 Globales</h3>
                 <p>Más allá de un único bloque, analizando el grafo de flujo de control del programa o nivel función.
                     Permiten realizar propagación de constantes global, identificar variables vivas, y la eliminación de
                     código muerto o inalcanzable.</p>
+                <div class="code-block">
+                    <pre><span class="comment">// Eliminación de código inalcanzable analizado globalmente</span>
+<span class="keyword">int</span> <span class="function">suma</span>() {
+  <span class="keyword">return</span> 5;
+  <span class="keyword">int</span> x = 10; <span class="comment">// Después de un return esto nunca se ejecutará. Se omite.</span>
+}</pre>
+                </div>
 
                 <h3 id="u3-1-4">3.1.4 De mirilla (Peephole)</h3>
                 <p>Es una técnica que inspecciona mecánicamente reducidas secuencias de código objeto (la "mirilla")
@@ -307,7 +383,8 @@ L1: <span class="function">JMP</span> L2  <span class="comment">; La mirilla cam
                     uso según las necesidades del contexto.</p>
                 <ul>
                     <li><strong>Registros:</strong> Son la memoria más rápida del CPU; el algoritmo de <em>Asignación de
-                            Registros</em> minimiza los volcados en la pila de memoria (RAM) acelerando el programa.</li>
+                            Registros</em> minimiza los volcados en la pila de memoria (RAM) acelerando el programa.
+                    </li>
                     <li><strong>Memoria:</strong> Mejorar la localidad espacial y temporal para aprovechar
                         adecuadamente la memoria caché.</li>
                     <li><strong>Pilas:</strong> Evitar realizar llamadas excesivas e innecesarias a rutinas (overheads
@@ -335,6 +412,79 @@ L1: <span class="function">JMP</span> L2  <span class="comment">; La mirilla cam
                     es matemáticamente seguro aplicar qué optimizaciones sin cambiar el comportamiento del programa.</p>
 
             </section>
+
+            <!-- Unidad 4 -->
+            <section class="content-section" id="unidad-4">
+                <h1>Unidad 4: Generación de código objeto</h1>
+                <p>La generación de código objeto es la fase final del compilador. Recibe como entrada el código
+                    intermedio (optimizado o no) y su objetivo principal es producir de salida un código equivalente en
+                    el lenguaje de la máquina objetivo (código objeto o ensamblador), teniendo siempre en cuenta la
+                    arquitectura física y los recursos del procesador en cuestión.</p>
+
+                <h2 id="u4-1">4.1 Registros</h2>
+                <p>La correcta asignación y administración de los registros es vital. Como los registros del procesador
+                    central son la memoria más veloz y más escasa, el compilador debe decidir cuidadosamente qué
+                    variables y resultados temporales deben residir en registros y cuáles deben volcarse de vuelta en la
+                    memoria principal.</p>
+                <div class="code-block">
+                    <pre><span class="comment">; Ejemplo de asignación a registros en x86</span>
+<span class="function">MOV</span> EAX, <span class="number">10</span>    <span class="comment">; Se asigna el valor 10 al registro EAX</span>
+<span class="function">ADD</span> EAX, EBX   <span class="comment">; Se suma EBX a EAX sin acceder a la RAM externa</span></pre>
+                </div>
+                <p>Existen algoritmos robustos como el <em>"coloreado de grafos"</em>, donde se mapean y deducen las
+                    interferencias de variables vivas para aprovechar al máximo los registros finitos evitando
+                    sobrescribir información importante.</p>
+
+                <h2 id="u4-2">4.2 Lenguaje ensamblador</h2>
+                <p>El compilador suele generar primero un archivo en lenguaje ensamblador en lugar de escribir código
+                    máquina puro. El ensamblador es un set de instrucciones legibles empleando reglas nemotécnicas (como
+                    ADD, MOV, JMP) que son altamente dependientes de la familia del procesador a usar (x86, ARM,
+                    RISC-V).</p>
+                <div class="code-block">
+                    <pre><span class="comment">; Ejemplo de una suma (a = b + c) en ensamblador ARM</span>
+<span class="function">LDR</span> r1, [b]    <span class="comment">; Carga de la RAM el valor 'b' en el registro 1</span>
+<span class="function">LDR</span> r2, [c]    <span class="comment">; Carga de la RAM el valor 'c' en el registro 2</span>
+<span class="function">ADD</span> r0, r1, r2 <span class="comment">; Suma r1 y r2, y se guarda el resultado en r0</span>
+<span class="function">STR</span> r0, [a]    <span class="comment">; Almacena el nuevo registro 0 de vuelta en 'a'</span></pre>
+                </div>
+
+                <h2 id="u4-3">4.3 Lenguaje máquina</h2>
+                <p>El lenguaje máquina es directamente la secuencia de código fuente binaria (ceros y unos) comprensible
+                    y ejecutable por la tarjeta madre y procesador. Usualmente es otro subprograma independiente llamado
+                    <strong>Ensamblador</strong> (Assembler) el encargado del último salto de traducción del código
+                    lógico de nemotécnicos a los impulsos de instrucciones y números absolutos.</p>
+                <div class="code-block">
+                    <pre><span class="comment">; Representación de instrucciones pasadas a código máquina (mostrado en hex)</span>
+<span class="number">B8 0A 00 00 00</span>  <span class="comment">; Codificación de instrucción general: MOV EAX, 10</span>
+<span class="number">01 D8</span>           <span class="comment">; Codificación de instrucción general: ADD EAX, EBX</span></pre>
+                </div>
+
+                <h2 id="u4-4">4.4 Administración de memoria</h2>
+                <p>Para construir el programa final, el compilador debe indicar cómo la vida de variables creadas
+                    mapearán e instanciarán bloques en RAM. El enlazador aparta zonas estructurales delimitadas que
+                    tendrá el programa para cada ejecución:</p>
+                <ul>
+                    <li><strong>Texto / Código (Code Segment):</strong> Espacio de memoria de sólo lectura que aloja las
+                        macros y rutinas compiladas.</li>
+                    <li><strong>Datos (Data y BSS Segments):</strong> Espacios persistentes para guardar variables
+                        globales, literales inmutables y estáticos.</li>
+                    <li><strong>Pila de Llamada (Stack):</strong> Espacio para el flujo de rutinas anidadas (Stack
+                        Frames) de las funciones y conteniendo a todas sus variables localmente efímeras. Su base
+                        incrementa automáticamente controlando la pila.</li>
+                    <li><strong>Montículo (Heap):</strong> Área designada sin métricas en un principio donde radicará la
+                        persistencia de los punteros lógicos que irán solicitando espacio el tiempo de marcha o
+                        compilación en sí (funciones como <span class="code">malloc()</span> o el operador <span
+                            class="code">new</span>).</li>
+                </ul>
+                <div class="code-block">
+                    <pre><span class="comment">// Mapeo figurado en entorno estilo lenguaje C</span>
+<span class="keyword">int</span> global_var = 10; <span class="comment">// Se reserva directamente en BSS / Data</span>
+<span class="keyword">void</span> <span class="function">func</span>() {
+  <span class="keyword">int</span> local_var = 5; <span class="comment">// Se apila temporalmente en el Stack</span>
+  <span class="keyword">int</span>* p = <span class="function">malloc</span>(<span class="number">4</span>); <span class="comment">// Solicita en tiempo de ejecución en el Heap</span>
+}</pre>
+                </div>
+            </section>
         </main>
     </div>
 
@@ -342,6 +492,8 @@ L1: <span class="function">JMP</span> L2  <span class="comment">; La mirilla cam
         <p>&copy; 2026 Portal Informativo de Ingeniería de Sistemas | By <a href="https://github.com/elian2307"
                 target="_blank"><img src="https://github.com/elian2307.png" alt="">elian2307</a></p>
     </footer>
+    <button id="backToTopBtn" class="back-to-top" title="Volver arriba">&uarr;</button>
+    <script src="js/script.js"></script>
 
 </body>
 

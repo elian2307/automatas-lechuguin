@@ -5,6 +5,11 @@
   --text-light: #f4f4f4;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -35,6 +40,7 @@ header {
   color: var(--tea-green);
   font-weight: bold;
   font-size: 1.2rem;
+  cursor: pointer;
 }
 
 nav a {
@@ -141,19 +147,20 @@ footer p a {
   text-decoration: none;
   margin: 0 5px;
   transition: color 0.3s;
+
   &:hover {
     color: var(--tea-green);
     transition: color 0.3s;
-    
+
   }
 }
 
 footer p a img {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-    vertical-align: middle;
-    border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  vertical-align: middle;
+  border-radius: 50%;
 }
 
 /* Layout Documentacion */
@@ -203,6 +210,11 @@ footer p a img {
 
 .sidebar a:hover {
   color: var(--text-light);
+}
+
+.sidebar a.active {
+  color: var(--tea-green);
+  font-weight: bold;
 }
 
 .sidebar .sub-menu {
@@ -282,21 +294,41 @@ footer p a img {
   font-family: "Fira Code", monospace;
   font-size: 0.95rem;
   color: #e0e0e0;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-.code-block .keyword { color: #c5efcb; font-weight: bold; }
-.code-block .string { color: #f2e394; }
-.code-block .comment { color: #758173; font-style: italic; }
-.code-block .function { color: #9bbcf4; }
-.code-block .variable { color: #e2c0e8; }
-.code-block .number { color: #ffb86c; }
+.code-block .keyword {
+  color: #c5efcb;
+  font-weight: bold;
+}
+
+.code-block .string {
+  color: #f2e394;
+}
+
+.code-block .comment {
+  color: #758173;
+  font-style: italic;
+}
+
+.code-block .function {
+  color: #9bbcf4;
+}
+
+.code-block .variable {
+  color: #e2c0e8;
+}
+
+.code-block .number {
+  color: #ffb86c;
+}
 
 /* Responsive Layouts */
 @media (max-width: 900px) {
   .docs-layout {
     flex-direction: column;
   }
+
   .sidebar {
     width: 100%;
     height: auto;
@@ -312,23 +344,29 @@ footer p a img {
   .hero h1 {
     font-size: 2.5rem;
   }
+
   .hero p {
     font-size: 1rem;
   }
+
   .hero {
     padding: 60px 5%;
   }
+
   header {
     flex-wrap: wrap;
     gap: 10px;
   }
+
   .grid-container {
     grid-template-columns: 1fr;
     padding: 30px 5%;
   }
+
   .content-section h1 {
     font-size: 2rem;
   }
+
   .content-section h2 {
     font-size: 1.5rem;
   }
@@ -338,17 +376,21 @@ footer p a img {
   .hero h1 {
     font-size: 2rem;
   }
+
   .logo {
     font-size: 1.1rem;
   }
+
   nav a {
     margin-left: 10px;
     font-size: 0.85rem;
   }
+
   .code-block {
     font-size: 0.8rem;
     padding: 15px;
   }
+
   .btn-main {
     padding: 10px 20px;
     font-size: 0.9rem;
@@ -369,9 +411,78 @@ footer p a img {
 ::-webkit-scrollbar-thumb {
   background: var(--dusty-olive);
   border-radius: 5px;
-  border: 2px solid var(--black-deep); /* Gives a padded look */
+  border: 2px solid var(--black-deep);
+  /* Gives a padded look */
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--tea-green);
+}
+
+/* Extra UI Elements */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: var(--tea-green);
+  color: var(--black-deep);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  transform: translateY(-5px);
+  background-color: #f4f4f4;
+}
+
+.mobile-menu-btn {
+  display: none;
+  width: 100%;
+  background-color: var(--dusty-olive);
+  color: var(--text-light);
+  border: none;
+  padding: 12px;
+  font-family: inherit;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: background-color 0.3s;
+}
+
+.mobile-menu-btn:hover {
+  background-color: var(--tea-green);
+  color: var(--black-deep);
+}
+
+@media (max-width: 900px) {
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .sidebar-content {
+    display: none;
+  }
+
+  .sidebar-content.expanded {
+    display: block;
+  }
 }
