@@ -486,3 +486,125 @@ footer p a img {
     display: block;
   }
 }
+
+/* --- Estilos para la Actividad Práctica y Juego --- */
+.sidebar-game-btn {
+  color: var(--tea-green) !important;
+  font-weight: bold;
+  border: 1px dashed var(--tea-green);
+  padding: 10px 15px;
+  border-radius: 4px;
+  text-align: center;
+  margin-top: 15px;
+  display: block;
+  background: rgba(197, 239, 203, 0.05);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(197, 239, 203, 0.1);
+}
+
+.sidebar-game-btn:hover {
+  background: rgba(197, 239, 203, 0.2);
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(197, 239, 203, 0.3);
+}
+
+.game-cta-block {
+  margin-top: 50px;
+  background: linear-gradient(135deg, rgba(117, 129, 115, 0.08) 0%, rgba(197, 239, 203, 0.05) 100%);
+  border: 1px solid rgba(197, 239, 203, 0.3);
+  border-left: 5px solid var(--tea-green);
+  border-radius: 8px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.game-cta-block::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(197, 239, 203, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.game-cta-content {
+  position: relative;
+  z-index: 2;
+}
+
+.game-badge {
+  display: inline-block;
+  background-color: rgba(197, 239, 203, 0.15);
+  color: var(--tea-green);
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  border: 1px solid rgba(197, 239, 203, 0.3);
+}
+
+.game-cta-block h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #fff;
+  font-family: "Fira Code", monospace;
+  text-shadow: 0 0 10px rgba(197, 239, 203, 0.2);
+}
+
+.game-cta-block p {
+  color: #c5efcbdd;
+  font-size: 1.05rem;
+  margin-bottom: 25px;
+  max-width: 800px;
+}
+
+.btn-game-play {
+  display: inline-block;
+  background: var(--tea-green);
+  color: var(--black-deep);
+  padding: 14px 30px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 700;
+  font-family: "Fira Code", monospace;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 15px rgba(197, 239, 203, 0.3);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-game-play:hover {
+  background: #fff;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
+}
+
+/* Responsividad para el CTA del juego */
+@media (max-width: 768px) {
+  .game-cta-block {
+    padding: 25px 20px;
+    margin-top: 30px;
+  }
+  .game-cta-block h2 {
+    font-size: 1.4rem;
+  }
+  .game-cta-block p {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+  }
+  .btn-game-play {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    width: 100%;
+    text-align: center;
+  }
+}

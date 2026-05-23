@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompilaQuest | El Desafío del Compilador</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@300;600;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/juego.css">
+</head>
+
+<body class="game-body">
+
+    <header class="game-header">
+        <div class="logo" id="logoBtn">CompilaQuest</div>
+        <nav class="game-nav">
+            <a href="unidades.html" class="nav-back-btn"><i class="fa-solid fa-arrow-left"></i> Volver a Unidades</a>
+            <button id="helpBtn" class="nav-help-btn"><i class="fa-solid fa-book"></i> Guía de Consulta</button>
+            <button id="muteBtn" class="nav-mute-btn" title="Activar/Desactivar Sonido"><i class="fa-solid fa-volume-high"></i> Sonido</button>
+        </nav>
+    </header>
+
+    <div class="game-container">
+        <!-- CRT Screen Filter Effect Overlay -->
+        <div class="crt-overlay"></div>
+
+        <!-- Left Column: HUD & Terminal Controls -->
+        <aside class="game-sidebar">
+            <div class="status-panel">
+                <div class="status-header"><i class="fa-solid fa-circle-dot"></i> PANEL DE DIAGNÓSTICO</div>
+                
+                <div class="status-item">
+                    <span class="label">ESTABILIDAD DEL NÚCLEO:</span>
+                    <div class="stability-container">
+                        <div class="stability-bar" id="stabilityBar" style="width: 100%;"></div>
+                    </div>
+                    <span class="value" id="stabilityText">100%</span>
+                </div>
+
+                <div class="status-item">
+                    <span class="label">PUNTUACIÓN DE COMPILACIÓN:</span>
+                    <span class="value score-value" id="scoreText">0000</span>
+                </div>
+
+                <div class="status-item">
+                    <span class="label">FASE DE COMPILADOR:</span>
+                    <span class="value phase-value" id="phaseText">0 / 4</span>
+                </div>
+            </div>
+
+            <div class="phases-tracker">
+                <div class="tracker-title">SISTEMAS REQUERIDOS</div>
+                <div class="phase-step active" id="step1">
+                    <span class="bullet"><i class="fa-solid fa-chevron-right"></i></span>
+                    <span class="text">1. Análisis Semántico</span>
+                </div>
+                <div class="phase-step" id="step2">
+                    <span class="bullet"><i class="fa-solid fa-chevron-right"></i></span>
+                    <span class="text">2. Código Intermedio</span>
+                </div>
+                <div class="phase-step" id="step3">
+                    <span class="bullet"><i class="fa-solid fa-chevron-right"></i></span>
+                    <span class="text">3. Optimización</span>
+                </div>
+                <div class="phase-step" id="step4">
+                    <span class="bullet"><i class="fa-solid fa-chevron-right"></i></span>
+                    <span class="text">4. Generación Objeto</span>
+                </div>
+            </div>
+
+            <!-- Terminal Output Scroll -->
+            <div class="console-log-panel">
+                <div class="log-header">LOG DEL COMPILADOR</div>
+                <div class="log-lines" id="logLines">
+                    <div class="log-line text-info">&gt; Iniciando sistema de diagnóstico v2.6.0...</div>
+                    <div class="log-line text-info">&gt; Esperando autorización del programador...</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Column: Interactive Gaming Screen -->
+        <main class="game-screen" id="gameScreen">
+            
+            <!-- PANTALLA 1: BIENVENIDA -->
+            <div class="screen-content active" id="screenWelcome">
+                <div class="terminal-intro">
+                    <div class="glitch-title">COMPILAPRESENT: CORE REBOOT</div>
+                    <p class="intro-subtitle">ALERTA DEL SISTEMA: EL NÚCLEO DE COMPILACIÓN ESTÁ CORROMPIDO</p>
+                    <div class="terminal-box">
+                        <p class="typewriter-text">&gt; ERROR: Se han detectado fallos estructurales en los módulos del compilador. El paso de variables de alto nivel a binario ejecutable está suspendido.</p>
+                        <p>&gt; Misión: Debes diagnosticar y corregir manualmente los cuatro niveles principales del compilador (Análisis Semántico, Código Intermedio, Optimización, y Código Objeto) para restaurar la estabilidad al 100%.</p>
+                        <p>&gt; Si la estabilidad del núcleo llega a 0%, el sistema sufrirá un desbordamiento fatal y se reiniciará la fase actual.</p>
+                    </div>
+                    <button class="btn-game-play btn-start-game" id="startGameBtn">INICIAR DIAGNÓSTICO &gt;&gt;</button>
+                </div>
+            </div>
+
+            <!-- PANTALLA 2: FASE 1 - ANÁLISIS SEMÁNTICO -->
+            <div class="screen-content" id="screenPhase1">
+                <h2>MÓDULO 1: COMPROBACIÓN SEMÁNTICA</h2>
+                <p class="phase-desc">Analiza la sintaxis dada y determina si los tipos o declaraciones tienen coherencia semántica lógica. ¡Llega a 100 puntos en esta fase!</p>
+                
+                <div class="challenge-box">
+                    <div class="code-editor-header">
+                        <span class="editor-dot dot-red"></span>
+                        <span class="editor-dot dot-yellow"></span>
+                        <span class="editor-dot dot-green"></span>
+                        <span class="editor-title">semantic_checker.c</span>
+                    </div>
+                    <div class="code-editor-body">
+                        <pre id="semanticCode" class="interactive-code">// Esperando código...</pre>
+                    </div>
+                </div>
+
+                <div class="game-actions">
+                    <button class="btn-game-choice correct-btn" id="semanticCorrectBtn">
+                        <span class="icon"><i class="fa-solid fa-square-check"></i></span> Semánticamente Correcto
+                    </button>
+                    <button class="btn-game-choice incorrect-btn" id="semanticIncorrectBtn">
+                        <span class="icon"><i class="fa-solid fa-circle-xmark"></i></span> Error Semántico
+                    </button>
+                </div>
+                
+                <div class="phase-progress-info">
+                    Progreso Fase: <span id="semanticProgressText">0 / 100</span> PTS
+                </div>
+            </div>
+
+            <!-- PANTALLA 3: FASE 2 - CÓDIGO INTERMEDIO -->
+            <div class="screen-content" id="screenPhase2">
+                <h2>MÓDULO 2: ENSAMBLADOR DE CÓDIGO INTERMEDIO</h2>
+                <p class="phase-desc" id="phase2Desc">El compilador requiere traducir la expresión infija a su representación en Notación Polaca Inversa (Postfija). Selecciona los componentes en el orden correcto.</p>
+                
+                <div class="challenge-box">
+                    <div class="expression-title">EXPRESIÓN INFIJA A TRADUCIR:</div>
+                    <div class="expression-display" id="infixExpression">A + B * C</div>
+                </div>
+
+                <div class="assembly-area">
+                    <div class="assembly-label">TU TRADUCCIÓN POSTFIJA:</div>
+                    <div class="translation-slots" id="translationSlots">
+                        <!-- Aquí se van metiendo los bloques seleccionados -->
+                        <span class="placeholder-slot">Selecciona los bloques de abajo...</span>
+                    </div>
+                </div>
+
+                <div class="blocks-container" id="blocksContainer">
+                    <!-- Botones interactivos con las variables/operadores -->
+                </div>
+
+                <div class="game-actions" style="margin-top: 20px;">
+                    <button class="btn-game-play btn-action-reset" id="resetPhase2Btn">Limpiar Selección</button>
+                    <button class="btn-game-play btn-action-submit" id="submitPhase2Btn">Validar Código Intermedio</button>
+                </div>
+                
+                <div class="phase-progress-info">
+                    Progreso Fase: <span id="intermediateProgressText">0 / 100</span> PTS
+                </div>
+            </div>
+
+            <!-- PANTALLA 4: FASE 3 - OPTIMIZACIÓN PEEPHOLE -->
+            <div class="screen-content" id="screenPhase3">
+                <div class="phase3-header">
+                    <h2>MÓDULO 3: OPTIMIZADOR LÁSER PEEPHOLE</h2>
+                    <div class="countdown-timer">TIEMPO: <span id="timerText">25s</span></div>
+                </div>
+                <p class="phase-desc">Se ha generado código objeto preliminar ineficiente. ¡Usa tu rayo láser peephole (clic) para DESTRUIR las líneas de código redundantes, muertas o ineficaces antes de que acabe el tiempo!</p>
+                
+                <div class="challenge-box scrollable-editor">
+                    <div class="code-editor-header">
+                        <span class="editor-dot dot-red"></span>
+                        <span class="editor-dot dot-yellow"></span>
+                        <span class="editor-dot dot-green"></span>
+                        <span class="editor-title">compiler_output.s</span>
+                    </div>
+                    <div class="code-editor-body peephole-grid" id="peepholeGrid">
+                        <!-- Líneas de ensamblador interactivas -->
+                    </div>
+                </div>
+                
+                <div class="phase-progress-info">
+                    Redundancias Eliminadas: <span id="peepholeProgressText">0 / 4</span>
+                </div>
+            </div>
+
+            <!-- PANTALLA 5: FASE 4 - GENERACIÓN Y MEMORIA -->
+            <div class="screen-content" id="screenPhase4">
+                <h2>MÓDULO 4: ADMINISTRADOR DE MEMORIA OBJETO</h2>
+                <p class="phase-desc">Mapea los siguientes elementos de código al segmento de memoria física que les corresponde en tiempo de ejecución (Stack, Heap, BSS/Datos o Código) antes de que se llene la cola.</p>
+                
+                <div class="sorting-game-container">
+                    <div class="falling-item-box">
+                        <div class="falling-item" id="fallingItem">
+                            <!-- Elemento a clasificar -->
+                            Cargando...
+                        </div>
+                    </div>
+
+                    <div class="memory-buckets">
+                        <button class="bucket-btn" data-segment="stack">
+                            <span class="bucket-title">STACK</span>
+                            <span class="bucket-desc">Variables locales y llamadas</span>
+                        </button>
+                        <button class="bucket-btn" data-segment="heap">
+                            <span class="bucket-title">HEAP</span>
+                            <span class="bucket-desc">Persistencia y malloc()</span>
+                        </button>
+                        <button class="bucket-btn" data-segment="data">
+                            <span class="bucket-title">DATA / BSS</span>
+                            <span class="bucket-desc">Globales y Estáticos</span>
+                        </button>
+                        <button class="bucket-btn" data-segment="code">
+                            <span class="bucket-title">CÓDIGO (TEXT)</span>
+                            <span class="bucket-desc">Instrucciones compiladas</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="phase-progress-info">
+                    Progreso Fase: <span id="memoryProgressText">0 / 100</span> PTS
+                </div>
+            </div>
+
+            <!-- PANTALLA 6: VICTORTA -->
+            <div class="screen-content" id="screenVictory">
+                <div class="victory-panel">
+                    <div class="victory-icon"><i class="fa-solid fa-trophy fa-bounce text-warning"></i></div>
+                    <h2 class="glitch-title">¡SISTEMA REPARADO CON ÉXITO!</h2>
+                    <p class="intro-subtitle">ESTABILIDAD DEL COMPILADOR: 100%</p>
+                    
+                    <div class="certificate-box">
+                        <div class="cert-header">COMPILAPRESENT ACADEMY</div>
+                        <div class="cert-title">CERTIFICADO DE EXCELENCIA</div>
+                        <div class="cert-body">
+                            <p>Se otorga al valiente programador el título honorífico de:</p>
+                            <h3 id="playerTitle">INGENIERO DE COMPILADORES SENIOR</h3>
+                            <p>por resolver todos los diagnósticos y optimizar las fases de traducción semántica, intermedia y de ensamblado objeto.</p>
+                        </div>
+                        <div class="cert-score">PUNTUACIÓN OBTENIDA: <span id="finalScore">0000</span></div>
+                    </div>
+
+                    <div class="victory-actions">
+                        <button class="btn-game-play" id="restartGameBtn">JUGAR DE NUEVO <i class="fa-solid fa-rotate-right"></i></button>
+                        <a href="unidades.html" class="btn-game-play btn-secondary">Volver a Unidades <i class="fa-solid fa-book"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- SIDE-DRAWER: GUÍA DE CONSULTA RÁPIDA -->
+    <div class="help-drawer" id="helpDrawer">
+        <div class="drawer-header">
+            <h3><i class="fa-solid fa-book-open"></i> GUÍA DE CONSULTA PARA REPASO</h3>
+            <button class="close-drawer-btn" id="closeHelpBtn">&times;</button>
+        </div>
+        <div class="drawer-content">
+            <div class="drawer-section">
+                <h4>1. Análisis Semántico</h4>
+                <p>Verifica que los operandos sean compatibles con los operadores lógicos. Errores comunes:</p>
+                <ul>
+                    <li>Asignar una cadena a un entero: <code>int x = "hola"</code>.</li>
+                    <li>Suma de tipos incompatibles sin cast explícito en lenguajes fuertemente tipados.</li>
+                    <li>Uso de variables que no fueron declaradas previamente.</li>
+                </ul>
+            </div>
+
+            <div class="drawer-section">
+                <h4>2. Código Intermedio y Notación Polaca</h4>
+                <p>La <strong>Notación Polaca Inversa (Postfija)</strong> coloca el operador <em>después</em> de los operandos. Es ideal para evaluar con pilas:</p>
+                <ul>
+                    <li><code>A + B</code> &rarr; <code>A B +</code></li>
+                    <li><code>A + B * C</code> &rarr; <code>A B C * +</code> (ya que la multiplicación tiene precedencia)</li>
+                    <li><code>(A + B) * C</code> &rarr; <code>A B + C *</code></li>
+                </ul>
+                <p><strong>Cuádruplos</strong>: Compuestos por <code>(Operador, Operando1, Operando2, Resultado)</code> utilizando variables temporales explícitas (e.g. <code>t1</code>).</p>
+            </div>
+
+            <div class="drawer-section">
+                <h4>3. Optimización Peephole (Mirilla)</h4>
+                <p>Busca secuencias cortas de código ensamblador redundantes o simplificables:</p>
+                <ul>
+                    <li><strong>Redundancia de Cargas</strong>: <code>MOV R1, R2</code> seguido de <code>MOV R2, R1</code> (la segunda es innecesaria).</li>
+                    <li><strong>Álgebra trivial</strong>: Cambiar <code>ADD R1, R1, #0</code> por nada (no hace nada).</li>
+                    <li><strong>Reducción de Fuerza</strong>: Cambiar <code>MUL R1, R2, #2</code> por un desplazamiento de bit a la izquierda.</li>
+                </ul>
+            </div>
+
+            <div class="drawer-section">
+                <h4>4. Segmentos de Memoria</h4>
+                <ul>
+                    <li><strong>STACK</strong>: Almacena variables locales locales al ámbito y registros de activación de funciones en ejecución.</li>
+                    <li><strong>HEAP</strong>: Almacena memoria asignada dinámicamente en tiempo de ejecución (ej: <code>malloc</code>, <code>new</code>) administrada por el programador.</li>
+                    <li><strong>DATA / BSS</strong>: Almacena variables globales e inmutables del programa.</li>
+                    <li><strong>CÓDIGO (TEXT)</strong>: Almacena las instrucciones compiladas en lenguaje máquina directamente legibles por el procesador.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="help-drawer-backdrop" id="helpBackdrop"></div>
+
+    <script src="js/juego.js"></script>
+</body>
+
+</html>
